@@ -22,6 +22,11 @@ def read_root() -> dict[str, str]:
     return {"message": "Hello FastAPI"}
 
 
+@app.get("/health")
+def health_check() -> dict[str, str]:
+    return {"status": "ok"}
+
+
 @app.post("/todos/preview", response_model=TodoResponse)
 def preview_todo(todo: TodoCreate) -> TodoResponse:
     return TodoResponse(
