@@ -1,3 +1,4 @@
+import asyncio
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
@@ -29,3 +30,9 @@ def preview_todo(todo: TodoCreate) -> TodoResponse:
         description=todo.description,
         completed=False,
     )
+
+
+@app.get("/async-demo")
+async def async_demo() -> dict[str, str]:
+    await asyncio.sleep(2)
+    return {"message": "Async demo response"}
