@@ -1,5 +1,7 @@
 import asyncio
-from fastapi import FastAPI
+from typing import Annotated
+
+from fastapi import FastAPI, Path
 from pydantic import BaseModel, Field
 
 app = FastAPI()
@@ -25,6 +27,18 @@ def read_root() -> dict[str, str]:
 @app.get("/health")
 def health_check() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.get("/todos/{todo_id}", response_model=TodoResponse)
+def get_todo(
+    todo_id: Annotated[int, Path(ge=1, description="Todo ID")],
+) -> TodoResponse:
+    return TodoResponse(
+        id=todo_id,
+        title="Sample Todo",
+        description="This is a sample todo",
+        completed=False,
+    )
 
 
 @app.post("/todos/preview", response_model=TodoResponse)
